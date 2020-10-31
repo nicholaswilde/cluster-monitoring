@@ -12,7 +12,7 @@
     },
     {
       name: 'armExporter',
-      enabled: false,
+      enabled: true,
       file: import 'modules/arm_exporter.jsonnet',
     },
     {
@@ -44,11 +44,11 @@
 
   k3s: {
     enabled: false,
-    master_ip: ['192.168.1.15'],
+    master_ip: ['192.168.1.203'],
   },
 
   // Domain suffix for the ingresses
-  suffixDomain: '192.168.1.15.nip.io',
+  suffixDomain: '192.168.1.203.nip.io',
   // If TLSingress is true, a self-signed HTTPS ingress with redirect will be created
   TLSingress: true,
   // If UseProvidedCerts is true, provided files will be used on created HTTPS ingresses.
@@ -60,30 +60,30 @@
   // Persistent volume configuration
   enablePersistence: {
     // Setting these to false, defaults to emptyDirs.
-    prometheus: false,
-    grafana: false,
+    prometheus: true,
+    grafana: true,
     // If using a pre-created PV, fill in the names below. If blank, they will use the default StorageClass
-    prometheusPV: '',
-    grafanaPV: '',
+    prometheusPV: 'prometheus-pv-nfs',
+    grafanaPV: 'grafana-pv-nfs',
     // If required to use a specific storageClass, keep the PV names above blank and fill the storageClass name below.
     storageClass: '',
     // Define the PV sizes below
-    prometheusSizePV: '2Gi',
-    grafanaSizePV: '20Gi',
+    prometheusSizePV: '1Gi',
+    grafanaSizePV: '50Gi',
   },
 
   // Configuration for Prometheus deployment
   prometheus: {
-    retention: '15d',
-    scrapeInterval: '30s',
-    scrapeTimeout: '30s',
+    retention: '2d',
+    scrapeInterval: '1m',
+    scrapeTimeout: '1m',
   },
   grafana: {
     // Grafana "from" email
-    from_address: 'myemail@gmail.com',
+    from_address: 'ncwilde43@gmail.com',
     // Plugins to be installed at runtime.
-    //Ex. plugins: ['grafana-piechart-panel', 'grafana-clock-panel'],
-    plugins: [],
+    plugins: ['grafana-piechart-panel', 'grafana-clock-panel'],
+    //plugins: [],
     //Ex. env: [ { name: 'http_proxy', value: 'host:8080' } ]
     env: []
   },
